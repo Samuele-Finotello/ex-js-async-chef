@@ -1,5 +1,3 @@
-import dayjs from 'dayjs';
-
 async function fetchJson(url) {
   const response = await fetch(url);
   const object = await response.json();
@@ -16,7 +14,7 @@ async function getChefBirthday(id) {
   }
 
   if (recipe.message) {
-    throw new Error(recipe.message)
+    throw new Error(`Ricetta con id ${id} non trovata`)
   }
 
   const userId = recipe.userId;
@@ -30,7 +28,7 @@ async function getChefBirthday(id) {
   }
 
   if (chef.message) {
-    throw new Error(chef.message)
+    throw new Error(`Chef con id ${userId} non trovato`)
   }
 
   return chef.birthDate;
@@ -39,7 +37,8 @@ async function getChefBirthday(id) {
 (async () => {
   try {
     const chefBirthday = await getChefBirthday(4);
-    console.log('Data di nascita dello chef: ', chefBirthday)
+    const formattedChefBirthday = dayjs(chefBirthday).format('DD/MM/YYYY')
+    console.log('Data di nascita dello chef: ', formattedChefBirthday)
   } catch (error) {
     console.error(error)
   }
